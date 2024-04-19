@@ -16,9 +16,13 @@ public class Scroll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerController.gameOver == false)
+        if(playerController.gameOver == false && playerController.sprinting == false)
         {
             transform.Translate(Vector3.left * Time.deltaTime * speed);
+        }
+        else if(playerController.gameOver == false)
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * speed * 2);
         }
 
         if(transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
