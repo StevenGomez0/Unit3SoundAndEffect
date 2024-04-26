@@ -40,15 +40,19 @@ public class Target : MonoBehaviour
             Destroy(gameObject);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             gameManager.UpdateScore(pointValue);
+            if (gameObject.CompareTag("Bad"))
+            {
+                gameManager.MinusLife();
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Destroy (gameObject);
-        if (!gameObject.CompareTag("Bad"))
+        if (!gameObject.CompareTag("Bad") && gameManager.isGameActive)
         {
-            gameManager.GameOver();
+            gameManager.MinusLife();
             
         }
     }

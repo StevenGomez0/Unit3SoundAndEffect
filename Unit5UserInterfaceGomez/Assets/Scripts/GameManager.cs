@@ -8,17 +8,30 @@ using UnityEditor.EditorTools;
 
 public class GameManager : MonoBehaviour
 {
+    private AudioSource audioSource;
     public List<GameObject> targets;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
+    public TextMeshProUGUI livesText;
+    public Slider slider;
 
     public GameObject titleScreen;
 
     public Button restartButton;
     public bool isGameActive;
     private int score;
+    private int lives = 3;
     private float spawnRate = 1;
 
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+        audioSource.volume = slider.value;
+    }
     IEnumerator SpawnTarget()
     {
         while(isGameActive)
@@ -33,6 +46,17 @@ public class GameManager : MonoBehaviour
     {
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
+    }
+
+    public void MinusLife()
+    {
+        lives--;
+        livesText.text = "Lives: " + lives;
+
+        if (lives == 0)
+        {
+            GameOver();
+        }
     }
 
 
@@ -52,9 +76,11 @@ public class GameManager : MonoBehaviour
     {
         isGameActive = true;
         score = 0;
+        lives = 4;
         spawnRate /= difficulty;
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
+        MinusLife();
 
         titleScreen.gameObject.SetActive(false);
     }
